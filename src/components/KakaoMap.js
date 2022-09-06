@@ -1,15 +1,23 @@
-const { useEffect, useState, useRef } = require("react")
+const { useEffect, useState, useRef, useImperativeHandle, forwardRef } = require("react")
 /**
  * 
  * @param {*} param0 
  * @returns 
  */
-function KakaoMap({idName,width,height,reWidth,reHeight,lat,lon}) {
+function KakaoMap(prop, ref) {
     const[map,setMap]=useState(null);
     const kMap = useRef();
-
+    useImperativeHandle(ref, () => ({
+        // 부모 컴포넌트에서 사용할 함수를 선언
+        resize
+      }))
+    function resize() {
+        var domMap=kMap.current;
+        domMap.style.width=window.innerWidth+'px';
+        domMap.style.height=window.innerHeight+'px';
+    }
     useEffect(()=>{
-        let container = document.getElementById(idName);
+        let container = document.getElementById(prop.idName);
         let options = {
           center: new window.kakao.maps.LatLng(37.365264512305174, 127.10676860117488),
           level: 3
@@ -25,7 +33,7 @@ function KakaoMap({idName,width,height,reWidth,reHeight,lat,lon}) {
         domMap.style.height=window.innerHeight+'px';
     }
     return(
-        <div id={idName} ref={kMap} style={{width:width+"px", height:height+"px"}}></div>
+        <div id={prop.idName} ref={kMap} style={{width:prop.width+"px", height:prop.height+"px"}}></div>
     )
 }
-export default KakaoMap;
+export default forwardRef(KakaoMap);
