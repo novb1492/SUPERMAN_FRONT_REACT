@@ -11,10 +11,11 @@ function KakaoMap(prop, ref) {
         // 부모 컴포넌트에서 사용할 함수를 선언
         resize
       }))
-    function resize() {
+    function resize(width,height) {
         var domMap=kMap.current;
-        domMap.style.width=window.innerWidth+'px';
-        domMap.style.height=window.innerHeight+'px';
+        domMap.style.width=width+'px';
+        domMap.style.height=height+'px';
+        map.relayout();
     }
     useEffect(()=>{
         let container = document.getElementById(prop.idName);

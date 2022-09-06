@@ -4,7 +4,7 @@ function Main() {
     const kMap = useRef();
     window.addEventListener('resize',resize);
     function resize() {
-        kMap.current.resize();
+        kMap.current.resize(window.innerWidth,window.innerHeight);
     }
     return(
         <div>
