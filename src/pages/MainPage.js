@@ -3,13 +3,15 @@ import { checkObj } from "etc/Jslib";
 import { useEffect, useRef, useState } from "react";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
+import MainSw from "components/MainSw";
 function Main() {
     const [map, setMap] = useState(null);
-    const [arr, setArr] = useState([]);
     let nameAndAddressArr = [];
     let makerArr = [];
     let onMouseIndexArr = [];
+    let arr=[];
     const kMap = useRef();
+    const sw = useRef();
     window.addEventListener('resize', resize);
     function resize() {
         kMap.current.resize(window.innerWidth, window.innerHeight);
@@ -37,11 +39,7 @@ function Main() {
     function reset() {
         makerArr = [];
         nameAndAddressArr = [];
-        setArr((state)=>{
-            console.log(state);
-            state=[];
-            return state;
-        });
+        arr=[];
     }
     function search(keywords) {
         let ps = new window.kakao.maps.services.Places();
@@ -84,9 +82,8 @@ function Main() {
                 });
                 marker.setMap(map);
                 makerArr[makerArr.length] = marker;
-                let arrTemp=arr;
-                arrTemp[arrTemp.length]=data[i];
-                setArr(arrTemp);
+                arr[arr.length]=data[i];
+                sw.current.changeArr(arr);
             }
         }
     }
@@ -105,19 +102,7 @@ function Main() {
     }, [map]);
     return (
         <div>
-            <Swiper
-                spaceBetween={50}
-                slidesPerView={2.4}
-                onSlideChange={() => console.log('slide change')}
-                onSwiper={(swiper) => console.log(swiper)}
-            >
-             {
-                arr.map((val)=>{
-                    return <SwiperSlide key={val.id}>{val.place_name}</SwiperSlide>
-                })
-             }
-            
-            </Swiper>
+            <MainSw ref={sw}></MainSw>
             <KakaoMap ref={kMap} idName={'map'} height={window.innerHeight} width={window.innerWidth} key={'mainMap'} reciveMap={reciveMap}></KakaoMap>
         </div>
     )
