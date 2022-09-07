@@ -5,7 +5,6 @@ const { useEffect, useState, useRef, useImperativeHandle, forwardRef } = require
  * @returns 
  */
 function KakaoMap(prop, ref) {
-    const[map,setMap]=useState(null);
     const kMap = useRef();
     useImperativeHandle(ref, () => ({
         // 부모 컴포넌트에서 사용할 함수를 선언
@@ -15,7 +14,6 @@ function KakaoMap(prop, ref) {
         var domMap=kMap.current;
         domMap.style.width=width+'px';
         domMap.style.height=height+'px';
-        map.relayout();
     }
     useEffect(()=>{
         let container = document.getElementById(prop.idName);
@@ -24,9 +22,7 @@ function KakaoMap(prop, ref) {
           level: 3
         };
         let mapInit = new window.kakao.maps.Map(container, options);
-        window.addEventListener('resize',resize);
-        setMap(mapInit);
-
+        prop.reciveMap(mapInit);
     },[]);
     function resize() {
         var domMap=kMap.current;
