@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 function Main() {
     const [map, setMap] = useState(null);
     let nameAndAddressArr = [];
-    let makerArr = [];
+    let markerArr = [];
     let onMouseIndexArr = [];
     let arr=[];
     const kMap = useRef();
@@ -56,7 +56,7 @@ function Main() {
         }
     }
     function reset() {
-        makerArr = [];
+        markerArr = [];
         nameAndAddressArr = [];
         arr=[];
     }
@@ -85,9 +85,9 @@ function Main() {
      * 클릭한 마커는 냅두고 지운다
      */
     function clearSuperAndMarketMarkerArr() {
-        for (let ii in makerArr) {
+        for (let ii in markerArr) {
             if (onMouseIndexArr.indexOf(ii * 1) == -1) {
-                makerArr[ii].setMap(null);
+                markerArr[ii].setMap(null);
             }
         }
     }
@@ -109,7 +109,7 @@ function Main() {
                 });
                 marker.setMap(map);
                 //마커 배열에 담기
-                makerArr[makerArr.length] = marker;
+                markerArr[markerArr.length] = marker;
                 //슬라이드 바 표시위해 배열담기
                 arr[arr.length]=data[i];
                 //자식컴포넌트 호출 상단 슬라이드 바 만드는함수
@@ -140,7 +140,7 @@ function Main() {
                 content : iwContent,
                 removable : iwRemoveable
             });
-            infowindow.open(map, makerArr[index]);  
+            infowindow.open(map, markerArr[index]);  
         }
     }
     useEffect(() => {
