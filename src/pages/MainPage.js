@@ -2,6 +2,8 @@ import KakaoMap from "components/KakaoMap";
 import { checkObj } from "etc/Jslib";
 import { useEffect, useRef, useState } from "react";
 import MainSw from "components/MainSw";
+import { useNavigate } from "react-router-dom";
+
 function Main() {
     const [map, setMap] = useState(null);
     let nameAndAddressArr = [];
@@ -10,6 +12,7 @@ function Main() {
     let arr=[];
     const kMap = useRef();
     const sw = useRef();
+    let navigate = useNavigate();
     /**
      * 리사이즈 이벤트 추가
      * 자식 컴포넌트(KakaoMap)호출 후 리사이즈 한다
@@ -91,8 +94,8 @@ function Main() {
     function displayPlaces(data) {
         for (let i in data) {
             // 마커가 지도 위에 표시되도록 설정합니다
-            let pn = data[i].place_name;
-            let an = data[i].address_name;
+            let pn = data[i].place_name.trim();
+            let an = data[i].address_name.trim();
             let checkText = pn + "," + an;
             //이미 있는 장소는 제외
             if (!nameAndAddressArr.includes(checkText)) {
@@ -100,6 +103,9 @@ function Main() {
                 nameAndAddressArr[nameAndAddressArr.length] = checkText;
                 let marker = new window.kakao.maps.Marker({
                     position: new window.kakao.maps.LatLng(data[i].y, data[i].x)
+                });
+                window.kakao.maps.event.addListener(marker, 'click', ()=> {
+                    navigate('/market/'+pn+'/'+an);
                 });
                 marker.setMap(map);
                 //마커 배열에 담기
@@ -128,6 +134,13 @@ function Main() {
         map.panTo(new window.kakao.maps.LatLng(y, x));
         if(onMouseIndexArr.indexOf(index)==-1){
             onMouseIndexArr[onMouseIndexArr.length]=index;
+            let iwContent = '<div style="padding:5px;">'+item.place_name+'</div>';
+            let iwRemoveable = true;
+            let infowindow = new window.kakao.maps.InfoWindow({
+                content : iwContent,
+                removable : iwRemoveable
+            });
+            infowindow.open(map, makerArr[index]);  
         }
     }
     useEffect(() => {
