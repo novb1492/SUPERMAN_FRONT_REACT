@@ -1,8 +1,6 @@
 import KakaoMap from "components/KakaoMap";
 import { checkObj } from "etc/Jslib";
 import { useEffect, useRef, useState } from "react";
-import { Swiper, SwiperSlide } from 'swiper/react';
-import 'swiper/css';
 import MainSw from "components/MainSw";
 function Main() {
     const [map, setMap] = useState(null);
@@ -76,13 +74,17 @@ function Main() {
             let checkText = pn + "," + an;
             //이미 있는 장소는 제외
             if (!nameAndAddressArr.includes(checkText)) {
+                //중복확인 위해 배열에 추가(키워드가 상호/마트등 4가지 이기 때문에 같은 카테고리로 같은 매장이 오는경우가 많음 ex)준영 마트 상회/마트 키워드 모두 있음)
                 nameAndAddressArr[nameAndAddressArr.length] = checkText;
                 let marker = new window.kakao.maps.Marker({
                     position: new window.kakao.maps.LatLng(data[i].y, data[i].x)
                 });
                 marker.setMap(map);
+                //마커 배열에 담기
                 makerArr[makerArr.length] = marker;
+                //슬라이드 바 표시위해 배열담기
                 arr[arr.length]=data[i];
+                //자식컴포넌트 호출 
                 sw.current.changeArr(arr);
             }
         }
@@ -91,6 +93,12 @@ function Main() {
         if (pagination.hasNextPage) {
             pagination.nextPage();
         }
+    }
+    function changeFocus(item){
+        console.log(item);
+        var x=item.x;
+        var y=item.y;
+        map.panTo(new window.kakao.maps.LatLng(y, x));
     }
     useEffect(() => {
         if (!checkObj(map)) {
@@ -102,7 +110,7 @@ function Main() {
     }, [map]);
     return (
         <div>
-            <MainSw ref={sw}></MainSw>
+            <MainSw ref={sw} changeFocus={changeFocus} ></MainSw>
             <KakaoMap ref={kMap} idName={'map'} height={window.innerHeight} width={window.innerWidth} key={'mainMap'} reciveMap={reciveMap}></KakaoMap>
         </div>
     )

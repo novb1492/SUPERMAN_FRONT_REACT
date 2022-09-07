@@ -20,7 +20,13 @@ function MainSw(prop, ref) {
             >
              {
                 arr.map((val)=>{
-                    return <SwiperSlide key={val.id}>{val.place_name}</SwiperSlide>
+                    return <SwiperSlide key={val.id}>
+                        <div  onClick={()=>{
+                            prop.changeFocus(val);
+                        }}>
+                        {val.place_name}
+                        </div>
+                    </SwiperSlide>
                 })
              }
             
