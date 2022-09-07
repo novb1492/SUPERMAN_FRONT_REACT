@@ -19,10 +19,10 @@ function MainSw(prop, ref) {
                 onSwiper={(swiper) => console.log(swiper)}
             >
              {
-                arr.map((val)=>{
+                arr.map((val,index)=>{
                     return <SwiperSlide key={val.id}>
                         <div  onClick={()=>{
-                            prop.changeFocus(val);
+                            prop.changeFocus(val,index);
                         }}>
                         {val.place_name}
                         </div>

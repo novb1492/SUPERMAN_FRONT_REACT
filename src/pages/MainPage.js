@@ -10,18 +10,36 @@ function Main() {
     let arr=[];
     const kMap = useRef();
     const sw = useRef();
+    /**
+     * 리사이즈 이벤트 추가
+     * 자식 컴포넌트(KakaoMap)호출 후 리사이즈 한다
+     */
     window.addEventListener('resize', resize);
     function resize() {
         kMap.current.resize(window.innerWidth, window.innerHeight);
     }
+    /**
+     * KakaoMap컴포넌트에서 map을 생성해서 주면
+     * 받아서 저장 
+     * @param {obj} map 
+     */
     function reciveMap(map) {
         setMap(map);
     }
+    /**
+     * 지도의 중심좌표를 구한한뒤 근처 매장 찾는 함수 호출
+     */
     function xyToAddress() {
         let latlng = map.getCenter();
         let geocoder = new window.kakao.maps.services.Geocoder();
         geocoder.coord2Address(latlng.La, latlng.Ma, searchMarket);
     }
+    /**
+     * 카카오가 제공해주는 키워드 검색 사용
+     * @param {*} result 
+     * @param {*} status 
+     * @returns 
+     */
     function searchMarket(result, status) {
         if (status === window.kakao.maps.services.Status.OK) {
             //키워드로 검색 ex) 서울 동작구 마트
@@ -59,6 +77,10 @@ function Main() {
             return;
         }
     }
+    /**
+     * 마커들 지우는 함수
+     * 클릭한 마커는 냅두고 지운다
+     */
     function clearSuperAndMarketMarkerArr() {
         for (let ii in makerArr) {
             if (onMouseIndexArr.indexOf(ii * 1) == -1) {
@@ -84,7 +106,7 @@ function Main() {
                 makerArr[makerArr.length] = marker;
                 //슬라이드 바 표시위해 배열담기
                 arr[arr.length]=data[i];
-                //자식컴포넌트 호출 
+                //자식컴포넌트 호출 상단 슬라이드 바 만드는함수
                 sw.current.changeArr(arr);
             }
         }
@@ -94,11 +116,19 @@ function Main() {
             pagination.nextPage();
         }
     }
-    function changeFocus(item){
-        console.log(item);
+    /**
+     * MainSw컴포넌트에서 클릭시
+     * 오는 함수 중심 좌표이동 및 저장
+     * @param {*} item 
+     * @param {*} index 
+     */
+    function changeFocus(item,index){
         var x=item.x;
         var y=item.y;
         map.panTo(new window.kakao.maps.LatLng(y, x));
+        if(onMouseIndexArr.indexOf(index)==-1){
+            onMouseIndexArr[onMouseIndexArr.length]=index;
+        }
     }
     useEffect(() => {
         if (!checkObj(map)) {
