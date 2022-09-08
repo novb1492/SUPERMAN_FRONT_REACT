@@ -1,18 +1,20 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { getParam } from "../etc/Jslib";
+import { checkNew, errorHandle, getParam } from "../etc/Jslib";
 import { history } from "etc/History";
 import { requestProductList } from "../apis/MarketApi";
-
+import { useSelector,useDispatch } from "react-redux";
+import { PagingAction } from "reducers/PagingReducer";
 function Market() {
-    let [url,setUrl]=useState(window.location.href);
+    const [url,setUrl]=useState(window.location.href);
     const {pn,an}=useParams();
+    const state = useSelector((state) => state);
+    const dispatch=useDispatch()
     const pageTitle = "marketPage";
-    console.log(pn);
     useEffect(() => {
         const listenBackEvent = () => {
           if(window.location.href.includes('/market')){
-            console.log('button');
+            getProducts(getParam("page"),getParam("keyword"),getParam("category"));
           }
         };
         const unlistenHistoryEvent = history.listen(({ action }) => {
@@ -23,7 +25,6 @@ function Market() {
         return unlistenHistoryEvent;
       }, []);
     useEffect(()=>{
-        console.log(url);
         getProducts(getParam("page"),getParam("keyword"),getParam("category"));
     },[url]);
     function changePage(num) {
@@ -34,11 +35,27 @@ function Market() {
     }
     function getProducts(page,keyword,category) {
         requestProductList({page:page,keyword:keyword,category:category,an:an,pn:pn}).then(response=>{
-            console.log(response);
-        });
+            doneGetProducts(response.data);
+        }).catch(error=>{
+            let response = error.response;
+            let responseData = response.data;
+            if (checkNew(response.status, responseData.message)) {
+                requestProductList({page:page,keyword:keyword,category:category,an:an,pn:pn}).then(response => {
+                    doneGetProducts(response.data);
+                }).catch(error => {
+                    errorHandle(error);
+                });
+            } else {
+                errorHandle(error);
+            }
+        })
+    }
+    function doneGetProducts(data) {
+        dispatch(PagingAction.setInfo(data));
     }
     return(
         <div>
+            {JSON.stringify(state.PagingReducer)}
            {pn},{an}
            <button onClick={()=>{changePage(1);}}>+</button><button onClick={()=>{changePage(-1);}}>-</button>
         </div>

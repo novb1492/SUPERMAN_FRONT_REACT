@@ -98,3 +98,17 @@ export function show400ErrorList(error) {
     }
     return false;
 }
+/**
+ * 예외 발생시
+ * 해당 예외가 토큰 재발급 때문인지
+ * 확인하는 함수
+ * @param {int} state 
+ * @param {string} message 
+ * @returns 
+ */
+ export function checkNew(state, message) {
+    if (state == 403 && message == newTokenMessage()) {
+        return true;
+    }
+    return false;
+}
