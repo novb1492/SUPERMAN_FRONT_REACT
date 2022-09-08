@@ -2,15 +2,17 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getParam } from "../etc/Jslib";
 import { history } from "etc/History";
+import { requestProductList } from "../apis/MarketApi";
 
 function Market() {
     let [url,setUrl]=useState(window.location.href);
-    let{pn,an}=useParams();
-    const pageTitle = "marketPage"
+    const {pn,an}=useParams();
+    const pageTitle = "marketPage";
+    console.log(pn);
     useEffect(() => {
         const listenBackEvent = () => {
           if(window.location.href.includes('/market')){
-            alert('a');
+            console.log('button');
           }
         };
         const unlistenHistoryEvent = history.listen(({ action }) => {
@@ -22,12 +24,18 @@ function Market() {
       }, []);
     useEffect(()=>{
         console.log(url);
+        getProducts(getParam("page"),getParam("keyword"),getParam("category"));
     },[url]);
     function changePage(num) {
         let page=getParam("page")*1+num;
-        let changeUrl='/market/'+pn+'/'+an+'?page='+page+'&category='+(getParam("category"));
+        let changeUrl='/market/'+pn+'/'+an+'?page='+page+'&category='+(getParam("category"))+'&keyword='+(getParam("keyword"));
         window.history.pushState("", pageTitle,changeUrl);
         setUrl(changeUrl);
+    }
+    function getProducts(page,keyword,category) {
+        requestProductList({page:page,keyword:keyword,category:category,an:an,pn:pn}).then(response=>{
+            console.log(response);
+        });
     }
     return(
         <div>
