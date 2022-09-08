@@ -1,8 +1,8 @@
 import { instance, setInterceptors } from "apis/Request";
 
-function requestProductList(data) {
+function requestProductList(url) {
     setInterceptors(instance);
-    return  instance.get('/product/list/'+data.an+'/'+data.pn+'?page='+data.page+'&category='+data.category+'&keyword='+data.keyword);
+    return  instance.get(url);
 }
 
 export {

@@ -34,7 +34,8 @@ function Market() {
         setUrl(changeUrl);
     }
     function getProducts(page,keyword,category) {
-       dispatch( requestGet({page:page,keyword:keyword,category:category,an:an,pn:pn}));
+      let requestUrl='/product/list/'+an+'/'+pn+'?page='+page+'&category='+category+'&keyword='+keyword;
+      dispatch( requestGet(requestUrl));
     }
     return(
         <div>

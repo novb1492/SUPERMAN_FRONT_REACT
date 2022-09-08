@@ -13,7 +13,7 @@ let init = {
     nowPage: 0
 }
 const PagingSlice = createSlice({
-    name: 'reducer',
+    name: 'PagingSlice',
     initialState: init,
     reducers: {
         setInfo(state, action) {
@@ -25,16 +25,16 @@ const PagingSlice = createSlice({
         }
     }
 })
-export const requestGet = (data) => async (dispatch) => {
+export const requestGet = (url) => async (dispatch) => {
     try {
-        let response = await requestProductList({ page: data.page, keyword: data.keyword, category: data.category, an: data.an, pn: data.pn });
+        let response = await requestProductList(url);
         dispatch(PagingSlice.actions.setInfo(response.data));
     } catch (error) {
         let response = error.response;
         let responseData = response.data;
         if (checkNew(response.status, responseData.message)) {
             try {
-                let response = await requestProductList({ page: data.page, keyword: data.keyword, category: data.category, an: data.an, pn: data.pn });
+                let response = await requestProductList(url);
                 dispatch(PagingSlice.actions.setInfo(response.data));
             } catch (error) {
                 errorHandle(error);
