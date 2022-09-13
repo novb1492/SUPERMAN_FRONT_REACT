@@ -15,10 +15,10 @@ function Market() {
   const dispatch = useDispatch()
   const pageTitle = "marketPage";
   let changeUrl = (category, keyword, page) => {
-    return '/market/' + pn + '/' + an + '?page=' + page + '&category=' + category + '&keyword=' + keyword;
+    return `/market/${pn}/${an}?page=${page}&category=${category}&keyword=${keyword}`;
   }
   let getProducts = (page, keyword, category) => {
-    let requestUrl = '/product/list/' + an + '/' + pn + '?page=' + page + '&category=' + category + '&keyword=' + keyword;
+    let requestUrl = `/product/list/${an}/${pn}?page=${page}&category=${category}&keyword=${keyword}`;
     dispatch(requestGet(requestUrl));
   }
   /**
