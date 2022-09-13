@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { checkNew, errorHandle, getParam } from "../etc/Jslib";
+import {  getParam } from "../etc/Jslib";
 import { history } from "etc/History";
-import { requestProductList } from "../apis/MarketApi";
 import { useSelector,useDispatch } from "react-redux";
 import {  requestGet} from "reducers/PagingReducer";
+import NextAndBeforeButton from "components/page/NextBeforeButton";
+import PageNumArea from "components/page/PageNumArea";
 function Market() {
     const [url,setUrl]=useState(window.location.href);
     const {pn,an}=useParams();
@@ -40,8 +41,9 @@ function Market() {
     return(
         <div>
             {JSON.stringify(state.PagingReducer)}
-           {pn},{an}
-           <button onClick={()=>{changePage(1);}}>+</button><button onClick={()=>{changePage(-1);}}>-</button>
+            <PageNumArea></PageNumArea>
+            <NextAndBeforeButton clickFunction={changePage} num={1} text={'다음'} idName='nextButton'></NextAndBeforeButton>
+            <NextAndBeforeButton clickFunction={changePage} num={-1} text={'이전'} idName='beforeButton'></NextAndBeforeButton>
         </div>
     )
 }

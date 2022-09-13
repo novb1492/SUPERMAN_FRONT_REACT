@@ -1,9 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { requestProductList } from "../apis/MarketApi";
+import { requestInfo } from "../apis/BasicApi";
 import { checkNew, errorHandle } from "../etc/Jslib";
 
 let init = {
-    weight: 0,
     doneFlag: false,
     infoList: [],
     totalPage: 0,
@@ -19,6 +18,15 @@ const PagingSlice = createSlice({
         setInfo(state, action) {
             let payload = action.payload;
             state.infoList = payload.content;
+            state.infoList = payload.content;
+            state.totalPage = payload.totalPages;
+            state.last = payload.last;
+            state.first = payload.first;
+            state.empty = payload.empty;
+            state.nowPage = payload.number + 1;
+            if (!state.doneFlag) {
+                state.doneFlag = true;
+            }
         },
         minus(state, action) {
             state.weight = state.weight - action.payload.value;
@@ -27,14 +35,14 @@ const PagingSlice = createSlice({
 })
 export const requestGet = (url) => async (dispatch) => {
     try {
-        let response = await requestProductList(url);
+        let response = await requestInfo(url);
         dispatch(PagingSlice.actions.setInfo(response.data));
     } catch (error) {
         let response = error.response;
         let responseData = response.data;
         if (checkNew(response.status, responseData.message)) {
             try {
-                let response = await requestProductList(url);
+                let response = await requestInfo(url);
                 dispatch(PagingSlice.actions.setInfo(response.data));
             } catch (error) {
                 errorHandle(error);

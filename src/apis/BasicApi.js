@@ -1,10 +1,10 @@
 import { instance, setInterceptors } from "apis/Request";
 
-function requestProductList(url) {
+function requestInfo(url) {
     setInterceptors(instance);
     return  instance.get(url);
 }
 
 export {
-    requestProductList
+    requestInfo
 }
