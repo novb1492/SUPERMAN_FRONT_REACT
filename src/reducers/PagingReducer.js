@@ -18,7 +18,6 @@ const PagingSlice = createSlice({
         setInfo(state, action) {
             let payload = action.payload;
             state.infoList = payload.content;
-            state.infoList = payload.content;
             state.totalPage = payload.totalPages;
             state.last = payload.last;
             state.first = payload.first;
