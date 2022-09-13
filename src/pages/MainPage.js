@@ -105,7 +105,7 @@ function Main() {
                     position: new window.kakao.maps.LatLng(data[i].y, data[i].x)
                 });
                 window.kakao.maps.event.addListener(marker, 'click', ()=> {
-                    navigate('/market/'+pn+'/'+an);
+                    navigate('/market/'+pn+'/'+an+'?page=1&category=1000&keyword=');
                 });
                 marker.setMap(map);
                 //마커 배열에 담기
