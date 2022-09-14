@@ -1,4 +1,4 @@
-import CartDeleteButton from "components/cart/CartDeleteButton";
+import CartButton from "components/cart/CartButton";
 import CartList from "components/cart/CartList";
 import NextAndBeforeButton from "components/page/NextBeforeButton";
 import PageNumArea from "components/page/PageNumArea";
@@ -45,7 +45,7 @@ function CartPage() {
                     return <CartList data={data} key={data.id}></CartList>
                 })}
             </ul>
-            <CartDeleteButton></CartDeleteButton>
+            <CartButton></CartButton>
             <PageNumArea></PageNumArea>
             <NextAndBeforeButton clickFunction={changePage} num={1} text={'다음'} idName='nextButton'></NextAndBeforeButton>
             <NextAndBeforeButton clickFunction={changePage} num={-1} text={'이전'} idName='beforeButton'></NextAndBeforeButton>

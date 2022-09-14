@@ -31,7 +31,10 @@ function CartDeleteButton() {
         window.location.reload();
     }
     return (
-        <button onClick={()=>{requestDelete()}}>삭제</button>
+        <div>
+            <button onClick={()=>{requestDelete()}}>삭제</button>
+            <button>구매</button>
+        </div>
     )
 }
 
