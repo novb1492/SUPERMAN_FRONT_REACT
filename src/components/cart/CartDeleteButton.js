@@ -7,7 +7,6 @@ function CartDeleteButton() {
     const state = useSelector((state) => state.CartReducer);
     const dispatch = useDispatch();
     async function requestDelete() {
-        console.log(state.deleteArr);
         try {
             let response = await requestDeleteCart(state.deleteArr);
             doneDelete(response.data);
