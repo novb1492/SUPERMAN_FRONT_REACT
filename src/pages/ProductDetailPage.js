@@ -12,6 +12,9 @@ function ProductDetailPage() {
     useEffect(() => {
         requestGet();
     }, []);
+    /**
+     * 해당 상품 정보 조회
+     */
     async function requestGet() {
         let url = `/product/${productid}`;
         try {
@@ -35,6 +38,9 @@ function ProductDetailPage() {
     function doneGetInfo(data) {
         setInfo(data);
     }
+    /**
+     * 장바구니 담는 함수
+     */
     async function saveAtCart() {
         try {
             let response=await requestSave({productId:productid,eventId:info.eventId,count:count});

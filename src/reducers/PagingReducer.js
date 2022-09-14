@@ -26,9 +26,6 @@ const PagingSlice = createSlice({
             if (!state.doneFlag) {
                 state.doneFlag = true;
             }
-        },
-        minus(state, action) {
-            state.weight = state.weight - action.payload.value;
         }
     }
 })
