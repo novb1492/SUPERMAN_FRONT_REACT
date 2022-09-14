@@ -18,6 +18,9 @@ const CartSlice = createSlice({
                 arr.splice(index,1);
                 state.deleteArr=arr;
             }
+        },
+        clearArr(state){
+            state.deleteArr=[];
         }
     }
 })

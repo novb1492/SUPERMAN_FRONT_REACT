@@ -4,7 +4,6 @@ function requestSave(data) {
     setInterceptors(instance);
     return  instance.post('/cart/save',data);
 }
-
 export {
     requestSave
 }
