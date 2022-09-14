@@ -12,7 +12,7 @@ function Market() {
   const [url, setUrl] = useState(window.location.href);
   const { pn, an } = useParams();
   const state = useSelector((state) => state);
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const pageTitle = "marketPage";
   let changeUrl = (category, keyword, page) => {
     return `/market/${pn}/${an}?page=${page}&category=${category}&keyword=${keyword}`;
