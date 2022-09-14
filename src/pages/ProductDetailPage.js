@@ -1,4 +1,5 @@
 import { requestInfo } from "apis/BasicApi";
+import { requestSave } from "apis/MarketApi";
 import { checkNew, errorHandle } from "etc/Jslib";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
@@ -34,8 +35,27 @@ function ProductDetailPage() {
     function doneGetInfo(data) {
         setInfo(data);
     }
-    function saveAtCart() {
-        
+    async function saveAtCart() {
+        try {
+            let response=await requestSave({productId:productid,eventId:info.eventId,count:count});
+            doneSave(response.data);
+        } catch (error) {
+            let errorResponse = error.response;
+            let responseData = errorResponse.data;
+            if (checkNew(errorResponse.status, responseData.message)) {
+                try {
+                    let response = await requestSave({productId:productid,eventId:info.eventId,count:count});
+                    doneSave(response.data);
+                } catch (error) {
+                    errorHandle(error);
+                }
+            } else {
+                errorHandle(error);
+            }
+        }
+    }
+    function doneSave(data) {
+        alert(data.message);
     }
     return (
         <div>
@@ -43,7 +63,7 @@ function ProductDetailPage() {
             <input type="number" min="1" value={count} onChange={(e) => {
                 setCount(e.target.value);
             }} />
-            <button onClick={saveAtCart}>장바구니 담기</button>
+            <button onClick={()=>{saveAtCart();}}>장바구니 담기</button>
         </div>
 
     )
